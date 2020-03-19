@@ -1,9 +1,9 @@
 [package]
-authors = ['Anonymous']
+authors = ['starmesh']
 edition = '2018'
 homepage = 'https://substrate.dev'
 license = 'Unlicense'
-name = 'node-template-runtime'
+name = 'node-stella-runtime'
 repository = 'https://github.com/paritytech/substrate/'
 version = '2.0.0-alpha.3'
 [build-dependencies.wasm-builder-runner]
@@ -39,7 +39,7 @@ std = [
     'system/std',
     'timestamp/std',
     'transaction-payment/std',
-    'template/std',
+    'stella/std',
 ]
 [dependencies.aura]
 default-features = false
@@ -178,10 +178,10 @@ package = 'frame-system'
 rev = '013c1ee167354a08283fb69915fda56a62fee943'
 version = '2.0.0-alpha.3'
 
-[dependencies.template]
+[dependencies.stella]
 default-features = false
-package = 'pallet-template'
-path = '../pallets/template'
+package = 'pallet-stella'
+path = '../pallets/stella'
 version = '2.0.0-alpha.3'
 
 [dependencies.timestamp]
