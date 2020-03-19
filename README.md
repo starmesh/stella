@@ -1,5 +1,5 @@
 # stella
+
 substrate palette concept
 
-
-stella rocks
+https://whimsical.com/M8PAm3ruacrVveidRrL9EC
