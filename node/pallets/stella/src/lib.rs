@@ -12,6 +12,7 @@
 use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch};
 use system::ensure_signed;
 
+
 #[cfg(test)]
 mod mock;
 
@@ -29,19 +30,17 @@ pub trait Trait: system::Trait {
 // This pallet's storage items.
 decl_storage! {
 	trait Store for Module<T: Trait> as TemplateModule {
-		// Just a dummy storage item.
-		// Here we are declaring a StorageValue, `Something` as a Option<u32>
-		// `get(fn something)` is the default getter which returns either the stored `u32` or `None` if nothing stored
+
 		Something get(fn something): Option<u32>;
+
+		Entries: map hasher(blake2_256) T::AccountId => T::Hash; 
 	}
 }
 
 // The pallet's events
 decl_event!(
 	pub enum Event<T> where AccountId = <T as system::Trait>::AccountId {
-		/// Just a dummy event.
-		/// Event `Something` is declared with a parameter of the type `u32` and `AccountId`
-		/// To emit this event, we call the deposit function, from our runtime functions
+
 		SomethingStored(u32, AccountId),
 	}
 );
@@ -69,19 +68,20 @@ decl_module! {
 		// this is needed only if you are using events in your pallet
 		fn deposit_event() = default;
 
-		/// Just a dummy entry point.
-		/// function that can be called by the external world as an extrinsics call
-		/// takes a parameter of the type `AccountId`, stores it, and emits an event
 		pub fn do_something(origin, something: u32) -> dispatch::DispatchResult {
-			// Check it was signed and get the signer. See also: ensure_root and ensure_none
 			let who = ensure_signed(origin)?;
 
-			// Code to execute when something calls this.
-			// For example: the following line stores the passed in u32 in the storage
 			Something::put(something);
 
-			// Here we are raising the Something event
 			Self::deposit_event(RawEvent::SomethingStored(something, who));
+			Ok(())
+		}
+
+		pub fn submit_hash(origin, hash: T::Hash) -> dispatch::DispatchResult{
+			let sender = ensure_signed(origin)?;
+
+			<Entries<T>>::insert(sender, hash);
+
 			Ok(())
 		}
 
