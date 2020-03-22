@@ -3,6 +3,8 @@
 use frame_support::{decl_module, decl_storage, decl_event, decl_error,debug, dispatch};
 use system::{offchain, ensure_signed};
 
+// use primitives::crypto::KeyTypeId;
+use sp_runtime::offchain::KeyTypeId;
 use sp_runtime::transaction_validity::{
   TransactionValidity, TransactionLongevity, ValidTransaction, InvalidTransaction
 };
@@ -14,12 +16,21 @@ mod mock;
 #[cfg(test)]
 mod tests;
 
-/// The pallet's configuration trait.
-pub trait Trait: system::Trait {
-	// Add other types and constants required to configure this pallet.
+pub const KEY_TYPE: KeyTypeId = KeyTypeId(*b"abcd");
 
-	/// The overarching event type.
-	type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
+pub mod crypto {
+  pub use super::KEY_TYPE;
+  use sp_runtime::app_crypto::{app_crypto, sr25519};
+  app_crypto!(sr25519, KEY_TYPE);
+}
+
+pub trait Trait: timestamp::Trait + system::Trait {
+  /// The overarching event type.
+  type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
+  type Call: From<Call<Self>>;
+
+  // type SubmitSignedTransaction: offchain::SubmitSignedTransaction<Self, <Self as Trait>::Call>;
+  type SubmitUnsignedTransaction: offchain::SubmitUnsignedTransaction<Self, <Self as Trait>::Call>;
 }
 
 // This pallet's storage items.
@@ -62,6 +73,10 @@ decl_module! {
 		// Initializing events
 		// this is needed only if you are using events in your pallet
 		fn deposit_event() = default;
+
+		fn offchain_worker(block: T::BlockNumber) {
+		      debug::info!("Hello World.");
+		}
 
 		pub fn do_something(origin, something: u32) -> dispatch::DispatchResult {
 			let who = ensure_signed(origin)?;

@@ -17,6 +17,7 @@ use sp_runtime::{
 use sp_runtime::traits::{
 	BlakeTwo256, Block as BlockT, IdentityLookup, Verify, ConvertInto, IdentifyAccount
 };
+use sp_runtime::transaction_validity;
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use grandpa::AuthorityList as GrandpaAuthorityList;
@@ -39,6 +40,9 @@ pub use frame_support::{
 
 /// Importing a stella pallet
 pub use stella;
+
+type SubmitTransaction = system::offchain::TransactionSubmitter<stella::crypto::Public, Runtime, UncheckedExtrinsic>;
+
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -221,9 +225,24 @@ impl sudo::Trait for Runtime {
 	type Call = Call;
 }
 
+/// We need to define the Transaction signer for that using the Key definition
+type SubmitHashTransaction = system::offchain::TransactionSubmitter<
+	stella::crypto::Public,
+	Runtime,
+	UncheckedExtrinsic
+>;
+
 /// Used for the module stella in `./stella.rs`
 impl stella::Trait for Runtime {
-	type Event = Event;
+
+  type Event = Event;
+  type Call = Call;
+
+  // To use signed transactions in your runtime
+  // type SubmitSignedTransaction = SubmitTransaction;
+
+  // To use unsigned transactions in your runtime
+  type SubmitUnsignedTransaction = SubmitHashTransaction;
 }
 
 construct_runtime!(
