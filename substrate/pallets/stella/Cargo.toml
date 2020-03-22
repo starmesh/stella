@@ -10,7 +10,6 @@ git = 'https://github.com/paritytech/substrate.git'
 rev = '013c1ee167354a08283fb69915fda56a62fee943'
 version = '2.0.0-alpha.3'
 
-
 [features]
 default = ['std']
 std = [
@@ -27,7 +26,7 @@ authors = ['starmesh']
 description = 'FRAME pallet stella'
 edition = '2018'
 homepage = 'https://substrate.dev'
-license = 'Unlicense'
+license = 'MIT'
 name = 'pallet-stella'
 repository = 'https://github.com/paritytech/substrate/'
 version = '2.0.0-alpha.3'
