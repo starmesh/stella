@@ -10,11 +10,6 @@ git = 'https://github.com/paritytech/substrate.git'
 rev = '013c1ee167354a08283fb69915fda56a62fee943'
 version = '2.0.0-alpha.3'
 
-[dev-dependencies.sp-runtime]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-rev = '013c1ee167354a08283fb69915fda56a62fee943'
-version = '2.0.0-alpha.3'
 
 [features]
 default = ['std']
@@ -23,10 +18,12 @@ std = [
     'frame-support/std',
     'safe-mix/std',
     'system/std',
+    'sp-runtime/std',
+    'timestamp/std'
 ]
 
 [package]
-authors = ['Anonymous']
+authors = ['starmesh']
 description = 'FRAME pallet stella'
 edition = '2018'
 homepage = 'https://substrate.dev'
@@ -34,6 +31,7 @@ license = 'Unlicense'
 name = 'pallet-stella'
 repository = 'https://github.com/paritytech/substrate/'
 version = '2.0.0-alpha.3'
+
 [dependencies.codec]
 default-features = false
 features = ['derive']
@@ -54,5 +52,18 @@ version = '1.0.0'
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 package = 'frame-system'
+rev = '013c1ee167354a08283fb69915fda56a62fee943'
+version = '2.0.0-alpha.3'
+
+[dependencies.sp-runtime]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+rev = '013c1ee167354a08283fb69915fda56a62fee943'
+version = '2.0.0-alpha.3'
+
+[dependencies.timestamp]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+package = 'pallet-timestamp'
 rev = '013c1ee167354a08283fb69915fda56a62fee943'
 version = '2.0.0-alpha.3'

@@ -9,8 +9,12 @@
 /// For more guidance on Substrate FRAME, see the example pallet
 /// https://github.com/paritytech/substrate/blob/master/frame/example/src/lib.rs
 
-use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch};
-use system::ensure_signed;
+use frame_support::{decl_module, decl_storage, decl_event, decl_error,debug, dispatch};
+use system::{offchain, ensure_signed};
+
+use sp_runtime::transaction_validity::{
+  TransactionValidity, TransactionLongevity, ValidTransaction, InvalidTransaction
+};
 
 
 #[cfg(test)]
