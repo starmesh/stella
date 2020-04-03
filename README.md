@@ -1,12 +1,13 @@
 # 🧷 stella
-Is [Substrate](substrate.dev) palett concept to connect Substrate ecosystem with [Filecoin Storage Market deals](https://filecoin-project.github.io/specs/#systems__filecoin_markets__storage_market).
+[Substrate](substrate.dev) palett concept to connect Substrate ecosystem with [Filecoin Storage Market deals](https://filecoin-project.github.io/specs/#systems__filecoin_markets__storage_market).
 
-[Learn more about Building a Custom Pallet](https://substrate.dev/docs/en/tutorials/build-a-dapp/pallet)
+* [What is a Pallet?](https://substrate.dev/docs/en/development/module/#what-is-a-pallet)
+* [Learn more about Building a Custom Pallet](https://substrate.dev/docs/en/tutorials/build-a-dapp/pallet)
 
 # High-level introduction
 We see potential to connect Substrate parachains with storage level where validators does not need to do pinning (hosting) from their own pocket of resources.
 
-We would like to leverage here
+### We would like to leverage here
 * [Filecoin Storage Market deals](https://filecoin-project.github.io/specs/#systems__filecoin_markets__storage_market).
 * [Substrate](substrate.dev)
 * [paritytech/substrate-lfs](https://github.com/paritytech/substrate-lfs)
