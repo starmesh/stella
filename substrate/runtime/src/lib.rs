@@ -260,7 +260,8 @@ construct_runtime!(
 		TransactionPayment: transaction_payment::{Module, Storage},
 		Sudo: sudo::{Module, Call, Config<T>, Storage, Event<T>},
 		// Used for the module stella in `./stella.rs`
-		StellaModule: stella::{Module, Call, Storage, Event<T>},
+		// StellaModule: stella::{Module, Call, Storage, Event<T>, ValidateUnsigned},
+		StellaModule: stella::{Module, Call, Storage, Event<T>, ValidateUnsigned},
 	}
 );
 

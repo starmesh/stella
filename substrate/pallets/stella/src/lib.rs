@@ -1,6 +1,6 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
-use frame_support::{decl_module, decl_storage, decl_event, decl_error,debug, dispatch};
+use frame_support::{decl_module, decl_storage, decl_event, decl_error, debug, dispatch};
 use system::{offchain, ensure_signed};
 
 // use primitives::crypto::KeyTypeId;
@@ -74,9 +74,19 @@ decl_module! {
 		// this is needed only if you are using events in your pallet
 		fn deposit_event() = default;
 
-		fn offchain_worker(block: T::BlockNumber) {
-		      debug::info!("Hello World.");
-		}
+	    pub fn onchain_callback(_origin, _block: T::BlockNumber/*, input: Vec<u8>*/) -> dispatch::DispatchResult  {
+	      debug::info!("{:?}", core::str::from_utf8(&input).unwrap());
+	      Ok(())
+	    }
+
+	    fn offchain_worker(block: T::BlockNumber) {
+	      // Here we specify the function to be called back on-chain in next block import.
+	      // debug::info!("Hello World.");
+
+	      let call = Call::onchain_callback(block/*, b"hello world!".to_vec()*/);
+	      T::SubmitUnsignedTransaction::submit_unsigned(call);
+	    }
+
 
 		pub fn do_something(origin, something: u32) -> dispatch::DispatchResult {
 			let who = ensure_signed(origin)?;
@@ -112,3 +122,23 @@ decl_module! {
 		}
 	}
 }
+
+// #[allow(deprecated)]
+// impl<T: Trait> frame_support::unsigned::ValidateUnsigned for Module<T> {
+//   type Call = Call<T>;
+
+//   fn validate_unsigned(call: &Self::Call) -> TransactionValidity {
+
+//     match call {
+//       Call::onchain_callback(block, input) => Ok(ValidTransaction {
+//         priority: 0,
+//         requires: vec![],
+//         provides: vec![(block, input).encode()],
+//         longevity: TransactionLongevity::max_value(),
+//         propagate: true,
+//       }),
+//       _ => InvalidTransaction::Call.into()
+//     }
+//   }
+// }
+
