@@ -1,14 +1,11 @@
-[dev-dependencies.sp-core]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-rev = '013c1ee167354a08283fb69915fda56a62fee943'
-version = '2.0.0-alpha.3'
-
-[dev-dependencies.sp-io]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-rev = '013c1ee167354a08283fb69915fda56a62fee943'
-version = '2.0.0-alpha.3'
+[package]
+name = 'stella'
+version = '0.1.0'
+authors = ['starmesh']
+edition = '2018'
+description = 'substrate pallet for IPFS communication'
+repository = 'https://github.com/starmesh/stella'
+license = 'MIT'
 
 [features]
 default = ['std']
@@ -16,20 +13,10 @@ std = [
     'codec/std',
     'frame-support/std',
     'safe-mix/std',
-    'system/std',
     'sp-runtime/std',
+    'system/std',
     'timestamp/std'
 ]
-
-[package]
-authors = ['starmesh']
-description = 'FRAME pallet stella'
-edition = '2018'
-homepage = 'https://substrate.dev'
-license = 'MIT'
-name = 'pallet-stella'
-repository = 'https://github.com/paritytech/substrate/'
-version = '2.0.0-alpha.3'
 
 [dependencies.codec]
 default-features = false
@@ -47,6 +34,12 @@ version = '2.0.0-alpha.3'
 default-features = false
 version = '1.0.0'
 
+[dependencies.sp-runtime]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+rev = '013c1ee167354a08283fb69915fda56a62fee943'
+version = '2.0.0-alpha.3'
+
 [dependencies.system]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
@@ -54,15 +47,23 @@ package = 'frame-system'
 rev = '013c1ee167354a08283fb69915fda56a62fee943'
 version = '2.0.0-alpha.3'
 
-[dependencies.sp-runtime]
+[dependencies.timestamp]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+package = 'pallet-timestamp'
+rev = '013c1ee167354a08283fb69915fda56a62fee943'
+version = '2.0.0-alpha.3'
+
+# dev-dependencies
+
+[dev-dependencies.sp-core]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 rev = '013c1ee167354a08283fb69915fda56a62fee943'
 version = '2.0.0-alpha.3'
 
-[dependencies.timestamp]
+[dev-dependencies.sp-io]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
-package = 'pallet-timestamp'
 rev = '013c1ee167354a08283fb69915fda56a62fee943'
 version = '2.0.0-alpha.3'

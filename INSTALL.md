@@ -1,0 +1,57 @@
+1) get "substrate node template" or any substrate runtime
+
+2) build this pallet
+
+3) add this to substrate runtime/Cargo.toml:
+
+[features]
+default = ['std']
+std = [
+    # --snip--
+    'stella/std',
+]
+
+[dependencies.stella]
+default-features = false
+git = 'https://github.com/starmesh/stella''
+branch = 'poc'
+package = 'stella'
+version = '0.1.0'
+# for develop
+# path = '../../stella'
+
+4) add this to substrate runtime/src/lib.rs
+
+// add the following code block
+impl stella::Trait for Runtime {
+    type Event = Event;
+}
+
+construct_runtime!(
+  pub enum Runtime where
+    Block = Block,
+    NodeBlock = opaque::Block,
+    UncheckedExtrinsic = UncheckedExtrinsic
+  {
+    // --snip--
+    // add the following line
+    Stella: stella::{Module, Call, Storage, Event<T>},
+  }
+);
+
+5) build substrate and run node
+
+example:
+cargo build
+./target/debug/node-template purge-chain --dev -lruntime=debug
+./target/debug/node-template --dev -lruntime=debug
+
+6) run ipfs daemon
+
+7) ipfs pin ls - list of pinned files
+
+8) go to https://polkadot.js.org/apps/#/extrinsics
+
+9) run ipfsCommand
+
+10) "ipfs pin ls" will show pinned hash of IPFS whitepaper: QmV9tSDx9UiPeWExXEeH6aoDvmihvx6jD5eLb4jbTaKGps
