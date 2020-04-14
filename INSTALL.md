@@ -4,6 +4,7 @@
 
 3) add this to substrate runtime/Cargo.toml:
 
+`
 [features]
 default = ['std']
 std = [
@@ -19,9 +20,11 @@ package = 'stella'
 version = '0.1.0'
 # for develop
 # path = '../../stella'
+`
 
 4) add this to substrate runtime/src/lib.rs
 
+`
 // add the following code block
 impl stella::Trait for Runtime {
     type Event = Event;
@@ -38,12 +41,16 @@ construct_runtime!(
     Stella: stella::{Module, Call, Storage, Event<T>},
   }
 );
+`
 
 5) build substrate and run node
 
 example:
+
 cargo build
+
 ./target/debug/node-template purge-chain --dev -lruntime=debug
+
 ./target/debug/node-template --dev -lruntime=debug
 
 6) run ipfs daemon
