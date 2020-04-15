@@ -4,7 +4,7 @@ use frame_support::codec::{Decode, Encode};
 use frame_support::sp_runtime::offchain::http;
 use frame_support::sp_std::prelude::Vec;
 use frame_support::{debug, decl_error, decl_event, decl_module, decl_storage, dispatch};
-use system::ensure_signed;
+// use system::ensure_signed;
 
 #[cfg(test)]
 mod mock;
@@ -19,7 +19,6 @@ pub struct IPFS {
 
 /// The pallet's configuration trait.
 pub trait Trait: system::Trait {
-    // Add other types and constants required to configure this pallet.
 
     /// The overarching event type.
     type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
@@ -28,10 +27,6 @@ pub trait Trait: system::Trait {
 // This pallet's storage items.
 decl_storage! {
     trait Store for Module<T: Trait> as TemplateModule {
-        // Just a dummy storage item.
-        // Here we are declaring a StorageValue, `Something` as a Option<u32>
-        // `get(fn something)` is the default getter which returns either the stored `u32` or `None` if nothing stored
-        Something get(fn something): Option<u32>;
 
         Commands get(fn commands):
             map hasher(blake2_128_concat) u32 => IPFS;
@@ -44,9 +39,8 @@ decl_event!(
     where
         AccountId = <T as system::Trait>::AccountId,
     {
-        /// Just a dummy event.
-        /// Event `Something` is declared with a parameter of the type `u32` and `AccountId`
-        /// To emit this event, we call the deposit function, from our runtime functions
+        /// dummy event
+        /// TODO: change to a valid event  
         SomethingStored(u32, AccountId),
     }
 );
@@ -73,38 +67,6 @@ decl_module! {
         // Initializing events
         // this is needed only if you are using events in your pallet
         fn deposit_event() = default;
-
-        /// Just a dummy entry point.
-        /// function that can be called by the external world as an extrinsics call
-        /// takes a parameter of the type `AccountId`, stores it, and emits an event
-        pub fn do_something(origin, something: u32) -> dispatch::DispatchResult {
-            // Check it was signed and get the signer. See also: ensure_root and ensure_none
-            let who = ensure_signed(origin)?;
-
-            // Code to execute when something calls this.
-            // For example: the following line stores the passed in u32 in the storage
-            Something::put(something);
-
-            // Here we are raising the Something event
-            Self::deposit_event(RawEvent::SomethingStored(something, who));
-            Ok(())
-        }
-
-        /// Another dummy entry point.
-        /// takes no parameters, attempts to increment storage value, and possibly throws an error
-        pub fn cause_error(origin) -> dispatch::DispatchResult {
-            // Check it was signed and get the signer. See also: ensure_root and ensure_none
-            let _who = ensure_signed(origin)?;
-
-            match Something::get() {
-                None => Err(Error::<T>::NoneValue)?,
-                Some(old) => {
-                    let new = old.checked_add(1).ok_or(Error::<T>::StorageOverflow)?;
-                    Something::put(new);
-                    Ok(())
-                },
-            }
-        }
 
         pub fn ipfs_command(_origin, command: Vec<u8>) -> dispatch::DispatchResult {
 
