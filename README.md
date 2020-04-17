@@ -1,5 +1,5 @@
 # 🧷 stella
-[Substrate](substrate.dev) palett concept to connect Substrate ecosystem with [Filecoin Storage Market deals](https://filecoin-project.github.io/specs/#systems__filecoin_markets__storage_market).
+[Substrate](substrate.dev) pallet concept to connect Substrate ecosystem with [Filecoin Storage Market deals](https://filecoin-project.github.io/specs/#systems__filecoin_markets__storage_market).
 
 * [What is a Pallet?](https://substrate.dev/docs/en/development/module/#what-is-a-pallet)
 * [Learn more about Building a Custom Pallet](https://substrate.dev/docs/en/tutorials/build-a-dapp/pallet)
