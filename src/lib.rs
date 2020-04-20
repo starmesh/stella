@@ -1,6 +1,6 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
-use frame_support::codec::{Decode, Encode};
+// use frame_support::codec::{Decode, Encode};
 use frame_support::sp_runtime::offchain::http;
 use frame_support::sp_std::prelude::Vec;
 use frame_support::{debug, decl_error, decl_event, decl_module, decl_storage, dispatch};
@@ -12,10 +12,10 @@ mod mock;
 #[cfg(test)]
 mod tests;
 
-#[derive(Encode, Decode, Default, Clone, PartialEq, Debug)]
-pub struct IPFS {
-    pub command: Vec<u8>,
-}
+// #[derive(Encode, Decode, Default, Clone, PartialEq, Debug)]
+// pub struct IPFS {
+//     pub command: Vec<u8>,
+// }
 
 /// The pallet's configuration trait.
 pub trait Trait: system::Trait {
@@ -33,8 +33,11 @@ decl_storage! {
         // `get(fn something)` is the default getter which returns either the stored `u32` or `None` if nothing stored
         Something get(fn something): Option<u32>;
 
-        Commands get(fn commands):
-            map hasher(blake2_128_concat) u32 => IPFS;
+        // TODO: add option
+        // Commands get(fn commands):
+        //     map hasher(blake2_128_concat) u32 => IPFS;
+
+        Command get(fn command): Option<Vec<u8>>;
     }
 }
 
@@ -107,48 +110,39 @@ decl_module! {
         }
 
         pub fn ipfs_command(_origin, command: Vec<u8>) -> dispatch::DispatchResult {
+            debug::warn!("[Extrinsic] The byte command is: {:?}", command);
 
-            // ---------------------------------------------
-            // TODO: get ipfs command
-            debug::warn!("The Command is: {:?}", command);
-
+            // TODO: real command
             let ipfs_command = "http://localhost:5001/api/v0/pin/add?arg=QmV9tSDx9UiPeWExXEeH6aoDvmihvx6jD5eLb4jbTaKGps";
-
-            // TODO: 42??
-            Commands::insert(42, IPFS { command: ipfs_command.as_bytes().to_vec() });
-            // ---------------------------------------------
+            Command::put(ipfs_command.as_bytes().to_vec());
 
             Ok(())
         }
 
         fn offchain_worker(_block: T::BlockNumber) {
+            if let Some(command) = Command::get(){
+                debug::info!("[Offchain worker] The command is: {:?}", command);
 
-            // ---------------------------------------------
-            // TODO: get command from storage if any
-            // TODO: remove executed command from storage
-
-            // TODO: 42??
-            let ipfs_command: IPFS = Commands::get(42);
-            debug::warn!(">>>>>>>>>>>>>> The Command is: {:?}", ipfs_command);
-            // ---------------------------------------------
-
-            match Self::ipfs_run(ipfs_command) {
-                Ok(_res) => debug::info!("Success!"),
-                Err(e) => debug::error!("Error ipfs_run: {}", e),
+                match Self::ipfs_run(command) {
+                    Ok(_res) => {
+                        debug::info!("Success!");
+                        // TODO: remove executed command from storage
+                        // Cmd::put(None);
+                    }
+                    Err(e) => debug::error!("Error ipfs_run: {}", e),
+                };
             };
         }
     }
 }
 
 impl<T: Trait> Module<T> {
-    fn ipfs_run(ipfs_command: IPFS) -> Result<(), &'static str> {
-        // TODO: ??
-        let body: Vec<&'static [u8]> = Vec::new();
+    fn ipfs_run(command: Vec<u8>) -> Result<(), &'static str> {
+        let command = frame_support::sp_std::str::from_utf8(&command).unwrap_or_else(|_err| {
+            return "Error in parsing command";
+        });
 
-        // TODO: unwrap
-        let ipfs_command = frame_support::sp_std::str::from_utf8(&ipfs_command.command).unwrap();
-
-        let pending = http::Request::post(ipfs_command, body)
+        let pending = http::Request::post(command, Vec::<&'static [u8]>::new())
             .send()
             .map_err(|_| "Error in sending http request")?;
 
