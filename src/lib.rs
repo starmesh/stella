@@ -1,6 +1,5 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
-// use frame_support::codec::{Decode, Encode};
 use frame_support::sp_runtime::offchain::http;
 use frame_support::sp_std::prelude::Vec;
 use frame_support::{debug, decl_error, decl_event, decl_module, decl_storage, dispatch};
@@ -12,20 +11,12 @@ mod mock;
 #[cfg(test)]
 mod tests;
 
-// #[derive(Encode, Decode, Default, Clone, PartialEq, Debug)]
-// pub struct IPFS {
-//     pub command: Vec<u8>,
-// }
-
-/// The pallet's configuration trait.
 pub trait Trait: system::Trait {
     // Add other types and constants required to configure this pallet.
 
-    /// The overarching event type.
     type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
 }
 
-// This pallet's storage items.
 decl_storage! {
     trait Store for Module<T: Trait> as TemplateModule {
         // Just a dummy storage item.
@@ -33,15 +24,10 @@ decl_storage! {
         // `get(fn something)` is the default getter which returns either the stored `u32` or `None` if nothing stored
         Something get(fn something): Option<u32>;
 
-        // TODO: add option
-        // Commands get(fn commands):
-        //     map hasher(blake2_128_concat) u32 => IPFS;
-
         Command get(fn command): Option<Vec<u8>>;
     }
 }
 
-// The pallet's events
 decl_event!(
     pub enum Event<T>
     where
@@ -54,7 +40,6 @@ decl_event!(
     }
 );
 
-// The pallet's errors
 decl_error! {
     pub enum Error for Module<T: Trait> {
         /// Value was None
@@ -64,7 +49,6 @@ decl_error! {
     }
 }
 
-// The pallet's dispatchable functions.
 decl_module! {
     /// The module declaration.
     pub struct Module<T: Trait> for enum Call where origin: T::Origin {
